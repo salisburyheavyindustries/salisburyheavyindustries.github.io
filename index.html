@@ -1,1 +1,240 @@
-SHI
+<html>
+    <head>
+        <title>Viridin Calendar</title>
+        <style>
+            body {
+                font-family: "Lucida Grande";
+            }
+
+            #aladis {
+                position: relative;
+                left: 150px;
+            }
+
+            #zinfan {
+                position: relative;
+                left: 400px;
+                top: 75px;
+                z-index: 1;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/gh/codebox/js-planet-phase@master/planet_phase.js"></script>
+        <script>
+            function yesterday() {
+                day = parseInt(document.getElementById("day").value, 10)
+                day = day - 1
+                document.getElementById("day").value = day
+
+                updateDate()
+            }
+            function tomorrow() {
+                day = parseInt(document.getElementById("day").value, 10)
+                day = day + 1
+                document.getElementById("day").value = day
+
+                updateDate()
+            }
+
+            function updateDate() {
+                day = parseInt(document.getElementById("day").value, 10)
+                month = parseInt(document.getElementById("month").value, 10)
+                year = parseInt(document.getElementById("year").value, 10)
+
+                if (day < 1) {
+                    day = 30
+                    month = month - 1
+                }
+                if (day > 30) {
+                    day = 1
+                    month = month + 1
+                }
+                if (month < 1) {
+                    month = 10
+                    year = year - 1
+                }
+                if (month > 10) {
+                    month = 1
+                    year = year + 1
+                }
+                if (year < 1) {
+                    year = 1
+                }
+
+                document.getElementById("day").value = day
+                document.getElementById("month").value = month
+                document.getElementById("year").value = year
+
+                var days = ["Martis", "Taytis", "Wedtis", "Tintis", "Frentis", "Mundis", "Tandis", "Wyndis", "Tyndis", "Fundis"]
+
+                weekName = ""
+                if (day >= 1 && day <= 10) {
+                    weekName = "First"
+                }
+                if (day >= 11 && day <= 20) {
+                    weekName = "Second"
+                }
+                if (day >= 21 && day <= 30 ) {
+                    weekName = "Third"
+                }
+
+                dayOfWeek = day % 10
+                if (dayOfWeek == 0) {
+                    dayOfWeek = 10
+                }
+                dayName = days[dayOfWeek - 1]
+
+                var months = ["Alturiak", "Ches", "Tarkash", "Mirtul", "Kython", "Flamerule", "Eleint", "Marpenoth", "Nightal", "Uktar"]
+                monthName = months[month - 1]
+
+                dayString = new String(weekName + " " + dayName + " of " + monthName + ", " + year)
+                document.getElementById("dateword").innerHTML = dayString
+
+                days = day + ((month - 1 ) * 30) + ((year - 1 ) * 300)
+                aladis_position = (days % 45) / 5.6
+                zinfan_position = (days % 60) / 7.5
+
+                aladis_index = Math.round(aladis_position)
+                zinfan_index = Math.round(zinfan_position)
+
+                if (aladis_index < 0) {
+                    aladis_index = 0
+                }
+                if (aladis_index > 7) {
+                    aladis_index = 7
+                }
+                if (zinfan_index < 0) {
+                    zinfan_index = 0
+                }
+                if (zinfan_index > 7) {
+                    zinfan_index = 7
+                }
+
+                aladis_names = ["Pure", "Moral", "Dark", "Fake", "Morning", "Evening", "Azure", "Scarlet"]
+                zinfan_names = ["Hawk", "Scales", "Maiden", "Drake", "Centaur", "Archer", "Ram", "Bear"]
+
+                first = aladis_names[aladis_index]
+                second = zinfan_names[zinfan_index]
+
+                moonString = new String(first + " " + second)
+                document.getElementById("moonword").innerHTML = moonString
+
+                shadow = 0
+                wax = false
+
+                if (aladis_position >= 0 && aladis_position < 4) {
+                    shadow = aladis_position*(-1/4)+1
+                    wax = false
+                }
+                if (aladis_position >= 4 && aladis_position < 8) {
+                    shadow = (aladis_position-4)*(1/4)
+                    wax = true
+                }
+
+                drawPlanetPhase(document.getElementById("aladis"), shadow, wax, {
+                    lightColour: "dbdbdb",
+                    shadowColour: "a6a6a6",
+                    diameter: 200,
+                });
+                drawPlanetPhase(document.getElementById("zinfan"), shadow, wax, {
+                    lightColour: "bf5300",
+                    shadowColour: "8a3c00",
+                    diameter: 50,
+                });
+
+                aladis_degree = aladis_position * 45
+                zinfan_degree = zinfan_position * 45
+
+                position_angle = 0
+                x = 180 - aladis_degree
+                if (x > 180) {
+                    position_angle = 360 - (x + zinfan_degree)
+                } else {
+                    position_angle = x + zinfan_degree
+                }
+
+                s = Math.sin(position_angle * Math.PI / 180)
+
+                if (position_angle > 90 && position_angle < 270) {
+                    left = ((s+1)*(350/2)+50)
+
+                    document.getElementById("zinfan").style.left = left
+                    document.getElementById("zinfan").style.zIndex = -1
+                } else {
+                    left = ((s-1)*(-350/-2)+400)
+
+                    document.getElementById("zinfan").style.left = left
+                    document.getElementById("zinfan").style.zIndex = 1
+                }
+            }
+        </script>
+    </head>
+    <body onload="updateDate()">
+        <h1>Viridin Calendar</h1>
+        <p>Describing the days and months of Viridin, the common name of each date, and the name and configuration of Viridin's moons, Aladis and Zinfan
+        <div>
+            <h2>Reference</h2>
+            <table>
+                <tr>
+                    <th>Days</th>
+                    <th>Months</th>
+                </tr>
+                <tr>
+                    <td>
+                        <ol>
+                            <li>Martis</li>
+                            <li>Taytis</li>
+                            <li>Wedtis</li>
+                            <li>Tintis</li>
+                            <li>Frentis</li>
+                            <li>Mundis</li>
+                            <li>Tandis</li>
+                            <li>Wyndis</li>
+                            <li>Tyndis</li>
+                            <li>Fundis</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <ol>
+                            <li>Alturiak</li>
+                            <li>Ches</li>
+                            <li>Tarkash</li>
+                            <li>Mirtul</li>
+                            <li>Kython</li>
+                            <li>Flamerule</li>
+                            <li>Eleint</li>
+                            <li>Marpenoth</li>
+                            <li>Nightal</li>
+                            <li>Uktar</li>
+                        </ol>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h2>Calculator</h2>
+            <table>
+                <tr>
+                    <th>Day</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                </tr>
+                <tr>
+                    <td><input type="number" id="day" name="day" onchange="updateDate()" value="20" min="0" max="31"></td>
+                    <td><input type="number" id="month" name="month" onchange="updateDate()" value="4" min="0" max="11"></td>
+                    <td><input type="number" id="year" name="year" onchange="updateDate()" value="1368" min="1"></td>
+                    <td><button type="button" onclick="yesterday()">Yesterday!</button></td>
+                    <td><button type="button" onclick="tomorrow()">Tomorrow!</button></td>
+            </table>
+            <h3 id="dateword">
+                Loading...
+            </h3>
+            <h3 id="moonword">
+                Loading...
+            </h3>
+        </div>
+        <div>
+            <div id="aladis"></div>
+            <div id="zinfan"></div>
+        </div>
+    </body>
+</html>
