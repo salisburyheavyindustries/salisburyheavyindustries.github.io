@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Viridin Calendar</title>
+        <title>D&D Campaign 2</title>
         <style>
             body {
                 font-family: "Lucida Grande";
@@ -169,8 +169,10 @@
         </script>
     </head>
     <body onload="updateDate()">
-        <h1>Viridin Calendar</h1>
-        <p>Describing the days and months of Viridin, the common name of each date, and the name and configuration of Viridin's moons, Aladis and Zinfan
+        <h1>Maps</h1>
+        <a href="varong.png">Varong Archipelago</a>
+        <a href="fenhen.png">Fenhen Empire</a>
+        <h1>Calendar</h1>
         <div>
             <h2>Reference</h2>
             <table>
@@ -209,6 +211,10 @@
                     </td>
                 </tr>
             </table>
+            <h2>Festivals</h2>
+            <ol>
+                <li>30/05 - Flamedawn</li>
+            </ol>
         </div>
         <div>
             <h2>Calculator</h2>
@@ -219,8 +225,8 @@
                     <th>Year</th>
                 </tr>
                 <tr>
-                    <td><input type="number" id="day" name="day" onchange="updateDate()" value="20" min="0" max="31"></td>
-                    <td><input type="number" id="month" name="month" onchange="updateDate()" value="4" min="0" max="11"></td>
+                    <td><input type="number" id="day" name="day" onchange="updateDate()" value="7" min="0" max="31"></td>
+                    <td><input type="number" id="month" name="month" onchange="updateDate()" value="5" min="0" max="11"></td>
                     <td><input type="number" id="year" name="year" onchange="updateDate()" value="1368" min="1"></td>
                     <td><button type="button" onclick="yesterday()">Yesterday!</button></td>
                     <td><button type="button" onclick="tomorrow()">Tomorrow!</button></td>
