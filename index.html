@@ -20,6 +20,22 @@
         </style>
         <script src="https://cdn.jsdelivr.net/gh/codebox/js-planet-phase@master/planet_phase.js"></script>
         <script>
+            function toOrdinal(value) {
+                var s = String(value),
+                len = s.length,
+                end  = s.substr(len - 1, 1),
+                teen = len > 1 && s.substr(len - 2, 1) === "1",
+                ord = "th";
+                if (end === "1" && !teen) {
+                ord = "st";
+                } else if (end === "2" && !teen) {
+                ord = "nd";
+                } else if (end === "3" && !teen) {
+                ord = "rd";
+                }
+                return ord;
+            };
+
             function yesterday() {
                 day = parseInt(document.getElementById("day").value, 10)
                 day = day - 1
@@ -65,6 +81,7 @@
                 document.getElementById("year").value = year
 
                 var days = ["Martis", "Taytis", "Wedtis", "Tintis", "Frentis", "Mundis", "Tandis", "Wyndis", "Tyndis", "Fundis"]
+                var days_misthsard = ["Martys", "Taytys", "Wedtys", "Tintys", "Frentys", "Mundys", "Tandys", "Wyndys", "Tyndys", "Fundys"]
 
                 weekName = ""
                 if (day >= 1 && day <= 10) {
@@ -82,12 +99,51 @@
                     dayOfWeek = 10
                 }
                 dayName = days[dayOfWeek - 1]
+                dayNameMistshard = days_misthsard[dayOfWeek - 1]
 
                 var months = ["Alturiak", "Ches", "Tarkash", "Mirtul", "Kython", "Flamerule", "Eleint", "Marpenoth", "Nightal", "Uktar"]
+                var months_misthard = ["The Claw of Winter", "The Claw of Sunsets", "Tarkash", "The Melting", "Kython", "Flamerule", "The Fading", "Marpenoth", "Leaffall", "Uktar"]
                 monthName = months[month - 1]
+                monthNameMistshard = months_misthard[month - 1]
 
-                dayString = new String(weekName + " " + dayName + " of " + monthName + ", " + year)
+                dayString = new String(weekName + " " + dayName + " of " + monthName + ", " + year + " AA")
                 document.getElementById("dateword").innerHTML = dayString
+
+                dayStringMistshard = new String(weekName + " " + dayNameMistshard + " of " + monthNameMistshard + ", " + (year + 186) + " RM")
+                document.getElementById("dateword_mistshard").innerHTML = dayStringMistshard
+
+                yearDay = day + ((month -1) * 30)
+                dawnCount = yearDay % 75
+                if (dawnCount == 0) {
+                    dawnCount = 75
+                }
+                dawnCount = dawnCount + toOrdinal(dawnCount)
+
+                if (yearDay >= 1 && yearDay <= 75) {
+                    season = "Winter"
+                }
+                if (yearDay >= 76 && yearDay <= 150) {
+                    season = "Spring"
+                }
+                if (yearDay >= 151 && yearDay <= 225) {
+                    season = "Summer"
+                }
+                if (yearDay >= 226 && yearDay <= 300) {
+                    season = "Autumn"
+                }
+
+                if (year > 0) {
+                    yearCount = year
+                    ageName = "The Rule of Sovereignty, The Third Age"
+                }
+                if (year > 997) {
+                    yearCount = year - 997
+                    ageName = "The Diaspora, The Fourth Age"
+                }
+                yearCount = yearCount + toOrdinal(yearCount)
+
+                dayStringElven = new String("The " + dawnCount + " Dawn Of " + season + " Of " + " The " + yearCount + " Year Of " + ageName)
+                document.getElementById("dateword_elven").innerHTML = dayStringElven
 
                 days = day + ((month - 1 ) * 30) + ((year - 1 ) * 300)
                 aladis_position = (days % 45) / 5.6
@@ -232,69 +288,186 @@
                 </tr>
             </tbody>
         </table>
-        <h1>Calendar</h1>
+        <h1>Calendars</h1>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Month</th>
+                <th>Year (AA)</th>
+            </tr>
+            <tr>
+                <td><input type="number" id="day" name="day" onchange="updateDate()" value="12" min="0" max="31"></td>
+                <td><input type="number" id="month" name="month" onchange="updateDate()" value="6" min="0" max="11"></td>
+                <td><input type="number" id="year" name="year" onchange="updateDate()" value="1368" min="1"></td>
+                <td><button type="button" onclick="yesterday()">Yesterday!</button></td>
+                <td><button type="button" onclick="tomorrow()">Tomorrow!</button></td>
+        </table>
         <div>
-            <h2>Reference</h2>
-            <table>
+            <table border="1">
                 <tr>
-                    <th>Days</th>
-                    <th>Months</th>
+                    <th>Fenhen</th>
+                    <th>Mistshard</th>
+                    <th>Elven</th>
                 </tr>
                 <tr>
                     <td>
-                        <ol>
-                            <li>Martis</li>
-                            <li>Taytis</li>
-                            <li>Wedtis</li>
-                            <li>Tintis</li>
-                            <li>Frentis</li>
-                            <li>Mundis</li>
-                            <li>Tandis</li>
-                            <li>Wyndis</li>
-                            <li>Tyndis</li>
-                            <li>Fundis</li>
-                        </ol>
+                        <div>
+                            The calendar of the Fenhen Empire, and used across Chang. The epoch being the landing of the original settlers on the eastern shores of Chang.<br>
+                            <br>
+                            Each day consists of 24 hours, each week consists of 10 days, and each month consists of 3 weeks. Years are counted since the epoch.<br>
+                            <br>
+                            0 AA is equal to 186 RM or The 739th Year Of The Rule of Sovereignty, The Third Age. BA is used for years prior to the epoch.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Days</th>
+                                <th>Months</th>
+                                <th>Festivals</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Martis</li>
+                                        <li>Taytis</li>
+                                        <li>Wedtis</li>
+                                        <li>Tintis</li>
+                                        <li>Frentis</li>
+                                        <li>Mundis</li>
+                                        <li>Tandis</li>
+                                        <li>Wyndis</li>
+                                        <li>Tyndis</li>
+                                        <li>Fundis</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol>
+                                        <li>Alturiak</li>
+                                        <li>Ches</li>
+                                        <li>Tarkash</li>
+                                        <li>Mirtul</li>
+                                        <li>Kython</li>
+                                        <li>Flamerule</li>
+                                        <li>Eleint</li>
+                                        <li>Marpenoth</li>
+                                        <li>Nightal</li>
+                                        <li>Uktar</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>30/05 - Flamedawn</li>
+                                        <li>30/10 - Long Night</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td>
-                        <ol>
-                            <li>Alturiak</li>
-                            <li>Ches</li>
-                            <li>Tarkash</li>
-                            <li>Mirtul</li>
-                            <li>Kython</li>
-                            <li>Flamerule</li>
-                            <li>Eleint</li>
-                            <li>Marpenoth</li>
-                            <li>Nightal</li>
-                            <li>Uktar</li>
-                        </ol>
+                        <div>
+                            The calendar used across Kovis and Basaya. The epoch being when reveille was called signalling the end of the Siege of Mistshard.<br>
+                            <br>
+                            Each day consists of 24 hours, each week consists of 10 days, and each month consists of 3 weeks. Years are counted since the epoch.<br>
+                            <br>
+                            0 RM is equal to 186 BA or The 553rd Year Of The Rule of Sovereignty, The Third Age. BM is used for years prior to the epoch.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Days</th>
+                                <th>Months</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Martys</li>
+                                        <li>Taytys</li>
+                                        <li>Wedtys</li>
+                                        <li>Tintys</li>
+                                        <li>Frentys</li>
+                                        <li>Mundys</li>
+                                        <li>Tandys</li>
+                                        <li>Wyndys</li>
+                                        <li>Tyndys</li>
+                                        <li>Fundys</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol>
+                                        <li>The Claw of Winter</li>
+                                        <li>The Claw of Sunsets</li>
+                                        <li>Tarkash</li>
+                                        <li>The Melting</li>
+                                        <li>Kython</li>
+                                        <li>Flamerule</li>
+                                        <li>The Fading</li>
+                                        <li>Marpenoth</li>
+                                        <li>Leaffall</li>
+                                        <li>Uktar</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
+                    <td>
+                        <div>
+                            The calendar used by Elven communities across Viridin. Each age starts from a major change in Elven culture, from the first day of the new year since the cultural change.<br>
+                            <br>
+                            The first age, starting from an unknown time, is the period when Corellon lived among the mortal elves.<br>
+                            The second age, from 2450 BA or 2264 BM, is the period when the elves lived within the Seelie and Unseelie Courts.<br>
+                            The third age, from 739 BA or 553 BM, is the period when the Fey Sovereignty rose to power, and ruled over all Elves.<br>
+                            The fourth age, from 997 AA or 1183 RM, is the current period, where the elves are reeling from the fall of the Sovereignty.<br>
+                            <br>
+                            The calendar counts the days of each season, counting the years since the start of the age.<br>
+                            The calendar is not applicable before the start of the first age.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Seasons</th>
+                                <th>Ages</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Winter</li>
+                                        <li>Spring</li>
+                                        <li>Summer</li>
+                                        <li>Autumn</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>When Corellon Walked Among Us, The First Age</li>
+                                        <li>The Games of The Courts, The Second Age</li>
+                                        <li>The Rule of Sovereignty, The Third Age</li>
+                                        <li>The Diaspora, The Fourth Age</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                <tr>
+                    <td>
+                        <h3 id="dateword">
+                            Loading...
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 id="dateword_mistshard">
+                            Loading...
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 id="dateword_elven">
+                            Loading...
+                        </h3>
+                    </td>
+                </tr>
                 </tr>
             </table>
-            <h2>Festivals</h2>
-            <ul>
-                <li>30/05 - Flamedawn</li>
-                <li>30/10 - Long Night</li>
-            </ul>
         </div>
         <div>
-            <h2>Calculator</h2>
-            <table>
-                <tr>
-                    <th>Day</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                </tr>
-                <tr>
-                    <td><input type="number" id="day" name="day" onchange="updateDate()" value="11" min="0" max="31"></td>
-                    <td><input type="number" id="month" name="month" onchange="updateDate()" value="6" min="0" max="11"></td>
-                    <td><input type="number" id="year" name="year" onchange="updateDate()" value="1368" min="1"></td>
-                    <td><button type="button" onclick="yesterday()">Yesterday!</button></td>
-                    <td><button type="button" onclick="tomorrow()">Tomorrow!</button></td>
-            </table>
-            <h3 id="dateword">
-                Loading...
-            </h3>
             <h3 id="moonword">
                 Loading...
             </h3>
