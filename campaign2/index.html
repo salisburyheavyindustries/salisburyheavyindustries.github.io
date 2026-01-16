@@ -1,0 +1,482 @@
+<html>
+    <head>
+        <title>Campaign 2</title>
+        <style>
+            body {
+                font-family: "Lucida Grande";
+            }
+
+            #aladis {
+                position: relative;
+                left: 150px;
+            }
+
+            #zinfan {
+                position: relative;
+                left: 400px;
+                top: 75px;
+                z-index: 1;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/gh/codebox/js-planet-phase@master/planet_phase.js"></script>
+        <script>
+            function toOrdinal(value) {
+                var s = String(value),
+                len = s.length,
+                end  = s.substr(len - 1, 1),
+                teen = len > 1 && s.substr(len - 2, 1) === "1",
+                ord = "th";
+                if (end === "1" && !teen) {
+                ord = "st";
+                } else if (end === "2" && !teen) {
+                ord = "nd";
+                } else if (end === "3" && !teen) {
+                ord = "rd";
+                }
+                return ord;
+            };
+
+            function yesterday() {
+                day = parseInt(document.getElementById("day").value, 10)
+                day = day - 1
+                document.getElementById("day").value = day
+
+                updateDate()
+            }
+            function tomorrow() {
+                day = parseInt(document.getElementById("day").value, 10)
+                day = day + 1
+                document.getElementById("day").value = day
+
+                updateDate()
+            }
+
+            function updateDate() {
+                day = parseInt(document.getElementById("day").value, 10)
+                month = parseInt(document.getElementById("month").value, 10)
+                year = parseInt(document.getElementById("year").value, 10)
+
+                if (day < 1) {
+                    day = 30
+                    month = month - 1
+                }
+                if (day > 30) {
+                    day = 1
+                    month = month + 1
+                }
+                if (month < 1) {
+                    month = 10
+                    year = year - 1
+                }
+                if (month > 10) {
+                    month = 1
+                    year = year + 1
+                }
+                if (year < 1) {
+                    year = 1
+                }
+
+                document.getElementById("day").value = day
+                document.getElementById("month").value = month
+                document.getElementById("year").value = year
+
+                var days = ["Martis", "Taytis", "Wedtis", "Tintis", "Frentis", "Mundis", "Tandis", "Wyndis", "Tyndis", "Fundis"]
+                var days_misthsard = ["Martys", "Taytys", "Wedtys", "Tintys", "Frentys", "Mundys", "Tandys", "Wyndys", "Tyndys", "Fundys"]
+
+                weekName = ""
+                if (day >= 1 && day <= 10) {
+                    weekName = "First"
+                }
+                if (day >= 11 && day <= 20) {
+                    weekName = "Second"
+                }
+                if (day >= 21 && day <= 30 ) {
+                    weekName = "Third"
+                }
+
+                dayOfWeek = day % 10
+                if (dayOfWeek == 0) {
+                    dayOfWeek = 10
+                }
+                dayName = days[dayOfWeek - 1]
+                dayNameMistshard = days_misthsard[dayOfWeek - 1]
+
+                var months = ["Alturiak", "Ches", "Tarkash", "Mirtul", "Kython", "Flamerule", "Eleint", "Marpenoth", "Nightal", "Uktar"]
+                var months_misthard = ["The Claw of Winter", "The Claw of Sunsets", "Tarkash", "The Melting", "Kython", "Flamerule", "The Fading", "Marpenoth", "Leaffall", "Uktar"]
+                monthName = months[month - 1]
+                monthNameMistshard = months_misthard[month - 1]
+
+                dayString = new String(weekName + " " + dayName + " of " + monthName + ", " + year + " AA")
+                document.getElementById("dateword").innerHTML = dayString
+
+                dayStringMistshard = new String(weekName + " " + dayNameMistshard + " of " + monthNameMistshard + ", " + (year + 186) + " RM")
+                document.getElementById("dateword_mistshard").innerHTML = dayStringMistshard
+
+                yearDay = day + ((month -1) * 30)
+                dawnCount = yearDay % 75
+                if (dawnCount == 0) {
+                    dawnCount = 75
+                }
+                dawnCount = dawnCount + toOrdinal(dawnCount)
+
+                if (yearDay >= 1 && yearDay <= 75) {
+                    season = "Winter"
+                }
+                if (yearDay >= 76 && yearDay <= 150) {
+                    season = "Spring"
+                }
+                if (yearDay >= 151 && yearDay <= 225) {
+                    season = "Summer"
+                }
+                if (yearDay >= 226 && yearDay <= 300) {
+                    season = "Autumn"
+                }
+
+                if (year > 0) {
+                    yearCount = year
+                    ageName = "The Rule of Sovereignty, The Third Age"
+                }
+                if (year > 997) {
+                    yearCount = year - 997
+                    ageName = "The Diaspora, The Fourth Age"
+                }
+                yearCount = yearCount + toOrdinal(yearCount)
+
+                dayStringElven = new String("The " + dawnCount + " Dawn Of " + season + " Of " + " The " + yearCount + " Year Of " + ageName)
+                document.getElementById("dateword_elven").innerHTML = dayStringElven
+
+                days = day + ((month - 1 ) * 30) + ((year - 1 ) * 300)
+                aladis_position = (days % 45) / 5.6
+                zinfan_position = (days % 60) / 7.5
+
+                aladis_index = Math.round(aladis_position)
+                zinfan_index = Math.round(zinfan_position)
+
+                if (aladis_index < 0) {
+                    aladis_index = 0
+                }
+                if (aladis_index > 7) {
+                    aladis_index = 7
+                }
+                if (zinfan_index < 0) {
+                    zinfan_index = 0
+                }
+                if (zinfan_index > 7) {
+                    zinfan_index = 7
+                }
+
+                aladis_names = ["Pure", "Moral", "Dark", "Fake", "Morning", "Evening", "Azure", "Scarlet"]
+                zinfan_names = ["Hawk", "Scales", "Maiden", "Drake", "Centaur", "Archer", "Ram", "Bear"]
+
+                first = aladis_names[aladis_index]
+                second = zinfan_names[zinfan_index]
+
+                moonString = new String(first + " " + second)
+                document.getElementById("moonword").innerHTML = moonString
+
+                shadow = 0
+                wax = false
+
+                if (aladis_position >= 0 && aladis_position < 4) {
+                    shadow = aladis_position*(-1/4)+1
+                    wax = false
+                }
+                if (aladis_position >= 4 && aladis_position < 8) {
+                    shadow = (aladis_position-4)*(1/4)
+                    wax = true
+                }
+
+                drawPlanetPhase(document.getElementById("aladis"), shadow, wax, {
+                    lightColour: "dbdbdb",
+                    shadowColour: "a6a6a6",
+                    diameter: 200,
+                });
+                drawPlanetPhase(document.getElementById("zinfan"), shadow, wax, {
+                    lightColour: "bf5300",
+                    shadowColour: "8a3c00",
+                    diameter: 50,
+                });
+
+                aladis_degree = aladis_position * 45
+                zinfan_degree = zinfan_position * 45
+
+                position_angle = 0
+                x = 180 - aladis_degree
+                if (x > 180) {
+                    position_angle = 360 - (x + zinfan_degree)
+                } else {
+                    position_angle = x + zinfan_degree
+                }
+
+                s = Math.sin(position_angle * Math.PI / 180)
+
+                if (position_angle > 90 && position_angle < 270) {
+                    left = ((s+1)*(350/2)+50)
+
+                    document.getElementById("zinfan").style.left = left
+                    document.getElementById("zinfan").style.zIndex = -1
+                } else {
+                    left = ((s-1)*(-350/-2)+400)
+
+                    document.getElementById("zinfan").style.left = left
+                    document.getElementById("zinfan").style.zIndex = 1
+                }
+            }
+        </script>
+    </head>
+    <body onload="updateDate()">
+        <h1>Maps</h1>
+        <a href="chang.png">Chang</a>
+        <a href="hopperdook.png">Hopperdook</a>
+        <a href="basaya.png">Basaya</a>
+        <h1>Artifacts of the Locked Court</h1>
+        <table border="1">
+            <tbody>
+                <tr>
+                    <td>Third Eye Edge</td>
+                    <td>"A mighty great sword with the power of foresight, now lost in the Feywild-overrun ruins of Edrahil"</td>
+                    <td><a href="artifacts/third-eye-edge-shaded-wmsgh.png">Shaded</a></td>
+                    <td><a href="artifacts/third-eye-edge-dawning-ggldf.png">Dawning</a></td>
+                    <!--<td><a href="artifacts/third-eye-edge-luminary-drxcs.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Mirage</td>
+                    <td>"A short bow of illusion and deception, lost in the shipwreck of the 'First of Infinite' in the deep sea between the Varong Archipelago and the land of Basaya"</td>
+                    <td><a href="artifacts/mirage-shaded-nnpmu.png">Shaded</a></td>
+                    <!--<td><a href="artifacts/mirage-dawning-pmsep.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/mirage-luminary-cnbhn.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Tempest Aegis</td>
+                    <td>"A shield with great destructive power, hidden away in a secret sanctuary in the foothills of the Heavenly Mountains"</td>
+                    <!--<td><a href="artifacts/tempest-aegis-shaded-ymynr.png">Shaded</a></td>-->
+                    <!--<td><a href="artifacts/tempest-aegis-dawning-hbvgu.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/tempest-aegis-luminary-cvcdx.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Plate of the Astral Weaver</td>
+                    <td>"Armour with the ability to manifest the wearer's desire, stolen and now kept in a Githyanki fortress sailing through the Astral Sea"</td>
+                    <td><a href="artifacts/plate-of-the-astral-weaver-shaded-ddwej.png">Shaded</a></td>
+                    <td><a href="artifacts/plate-of-the-astral-weaver-dawning-brfxu.png">Dawning</a></td>
+                    <!--<td><a href="artifacts/plate-of-the-astral-weaver-luminary-nmttv.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Ilmater's Bane</td>
+                    <td>"A cloak with a connection to the powers of life and death, worn upon the shoulders of a misguided Empress"</td>
+                    <!--<td><a href="artifacts/ilmaters-bane-shaded-gjocx.png">Shaded</a></td>-->
+                    <!--<td><a href="artifacts/ilmaters-bane-dawning-draoc.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/ilmaters-bane-luminary-wtnbb.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Aspects</td>
+                    <td>"Gauntlets with mastery over matter, lost within the belly of the Seluchin of the Archipelago"</td>
+                    <!--<td><a href="artifacts/aspects-shaded-ivrec.png">Shaded</a></td>-->
+                    <!--<td><a href="artifacts/aspects-dawning-slyjj.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/aspects-luminary-rghfi.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Staff of Tarish</td>
+                    <td>"A quarterstaff bound to protect the wielder, held as ransom in the Vaults of Xilmys"</td>
+                    <!--<td><a href="artifacts/staff-of-tarish-shaded-oxvgh.png">Shaded</a></td>-->
+                    <!--<td><a href="artifacts/staff-of-tarish-dawning-stmmu.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/staff-of-tarish-luminary-uklzm.png">Luminary</a></td>-->
+                </tr>
+                <tr>
+                    <td>Helm of Aboleths</td>
+                    <td>"A fine piece of armour bound with the abilities of charm and bewitching, currently hanging in the hall of the Dwarf Lord Regmar the Great"</td>
+                    <td><a href="artifacts/helm-of-aboleths-shaded-oisij.png">Shaded</a></td>
+                    <!--<td><a href="artifacts/helm-of-aboleths-dawning-vflzj.png">Dawning</a></td>-->
+                    <!--<td><a href="artifacts/helm-of-aboleths-luminary-mfxbx.png">Luminary</a></td>-->
+                </tr>
+            </tbody>
+        </table>
+        <h1>Calendars</h1>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Month</th>
+                <th>Year (AA)</th>
+            </tr>
+            <tr>
+                <td><input type="number" id="day" name="day" onchange="updateDate()" value="1" min="0" max="31"></td>
+                <td><input type="number" id="month" name="month" onchange="updateDate()" value="7" min="0" max="11"></td>
+                <td><input type="number" id="year" name="year" onchange="updateDate()" value="1368" min="1"></td>
+                <td><button type="button" onclick="yesterday()">Yesterday!</button></td>
+                <td><button type="button" onclick="tomorrow()">Tomorrow!</button></td>
+        </table>
+        <div>
+            <table border="1">
+                <tr>
+                    <th>Fenhen</th>
+                    <th>Mistshard</th>
+                    <th>Elven</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            The calendar of the Fenhen Empire, and used across Chang. The epoch being the landing of the original settlers on the eastern shores of Chang.<br>
+                            <br>
+                            Each day consists of 24 hours, each week consists of 10 days, and each month consists of 3 weeks. Years are counted since the epoch.<br>
+                            <br>
+                            0 AA is equal to 186 RM or The 739th Year Of The Rule of Sovereignty, The Third Age. BA is used for years prior to the epoch.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Days</th>
+                                <th>Months</th>
+                                <th>Festivals</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Martis</li>
+                                        <li>Taytis</li>
+                                        <li>Wedtis</li>
+                                        <li>Tintis</li>
+                                        <li>Frentis</li>
+                                        <li>Mundis</li>
+                                        <li>Tandis</li>
+                                        <li>Wyndis</li>
+                                        <li>Tyndis</li>
+                                        <li>Fundis</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol>
+                                        <li>Alturiak</li>
+                                        <li>Ches</li>
+                                        <li>Tarkash</li>
+                                        <li>Mirtul</li>
+                                        <li>Kython</li>
+                                        <li>Flamerule</li>
+                                        <li>Eleint</li>
+                                        <li>Marpenoth</li>
+                                        <li>Nightal</li>
+                                        <li>Uktar</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>30/05 - Flamedawn</li>
+                                        <li>30/10 - Long Night</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <div>
+                            The calendar used across Kovis and Basaya. The epoch being when reveille was called signalling the end of the Siege of Mistshard.<br>
+                            <br>
+                            Each day consists of 24 hours, each week consists of 10 days, and each month consists of 3 weeks. Years are counted since the epoch.<br>
+                            <br>
+                            0 RM is equal to 186 BA or The 553rd Year Of The Rule of Sovereignty, The Third Age. BM is used for years prior to the epoch.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Days</th>
+                                <th>Months</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Martys</li>
+                                        <li>Taytys</li>
+                                        <li>Wedtys</li>
+                                        <li>Tintys</li>
+                                        <li>Frentys</li>
+                                        <li>Mundys</li>
+                                        <li>Tandys</li>
+                                        <li>Wyndys</li>
+                                        <li>Tyndys</li>
+                                        <li>Fundys</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol>
+                                        <li>The Claw of Winter</li>
+                                        <li>The Claw of Sunsets</li>
+                                        <li>Tarkash</li>
+                                        <li>The Melting</li>
+                                        <li>Kython</li>
+                                        <li>Flamerule</li>
+                                        <li>The Fading</li>
+                                        <li>Marpenoth</li>
+                                        <li>Leaffall</li>
+                                        <li>Uktar</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <div>
+                            The calendar used by Elven communities across Viridin. Each age starts from a major change in Elven culture, from the first day of the new year since the cultural change.<br>
+                            <br>
+                            The first age, starting from an unknown time, is the period when Corellon lived among the mortal elves.<br>
+                            The second age, from 2450 BA or 2264 BM, is the period when the elves lived within the Seelie and Unseelie Courts.<br>
+                            The third age, from 739 BA or 553 BM, is the period when the Fey Sovereignty rose to power, and ruled over all Elves.<br>
+                            The fourth age, from 997 AA or 1183 RM, is the current period, where the elves are reeling from the fall of the Sovereignty.<br>
+                            <br>
+                            The calendar counts the days of each season, counting the years since the start of the age.<br>
+                            The calendar is not applicable before the start of the first age.<br>
+                            <br>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Seasons</th>
+                                <th>Ages</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <li>Winter</li>
+                                        <li>Spring</li>
+                                        <li>Summer</li>
+                                        <li>Autumn</li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>When Corellon Walked Among Us, The First Age</li>
+                                        <li>The Games of The Courts, The Second Age</li>
+                                        <li>The Rule of Sovereignty, The Third Age</li>
+                                        <li>The Diaspora, The Fourth Age</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                <tr>
+                    <td>
+                        <h3 id="dateword">
+                            Loading...
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 id="dateword_mistshard">
+                            Loading...
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 id="dateword_elven">
+                            Loading...
+                        </h3>
+                    </td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h3 id="moonword">
+                Loading...
+            </h3>
+        </div>
+        <div>
+            <div id="aladis"></div>
+            <div id="zinfan"></div>
+        </div>
+    </body>
+</html>
