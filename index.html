@@ -23,6 +23,16 @@
     </style>
     <script text="text/javascript">
         window.onload = function() {
+            document.getElementById("projects").onclick = function() {
+                document.getElementById("projects").innerHTML = `
+                    <a href="https://www.wheremegaskip.com" target="_blank">Where Mega Skip?</a>
+                `;
+
+                setTimeout(function() {
+                    document.getElementById("projects").innerHTML = `<div style="display: inline; text-decoration: underline;">Projects</div>`;
+                }, 5000);
+            };
+
             document.getElementById("socials").onclick = function() {
                 document.getElementById("socials").innerHTML = `
                     <a href="https://bsky.app/profile/salisburyheavyindustries.com" target="_blank">Bluesky</a>
@@ -49,6 +59,7 @@
             <div id="name">Joseph Salisbury</div>
             <div id="links">
                 <a href="Joseph Salisbury CV Q1 2026.pdf" target="_blank">CV</a>
+                <div id="projects" style="display: inline;"><div style="display: inline; text-decoration: underline;">Projects</div></div>
                 <div id="socials" style="display: inline;"><div style="display: inline; text-decoration: underline;">Socials</div></div>
                 <a href="https://www.youtube.com/playlist?list=PLe2laH02AdCw9stHJKEs5B_ml1XmrJT5H" target="_blank">Talks</a>
                 <div id="ttrpgs" style="display: inline;"><div style="display: inline; text-decoration: underline;">TTRPGs</div></div>
